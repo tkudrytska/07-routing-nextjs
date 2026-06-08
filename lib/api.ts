@@ -11,30 +11,31 @@ export interface FetchNotesResponse {
 export const fetchNotes = async (
   search: string,
   page: number,
+  tag: string
 ): Promise<FetchNotesResponse> => {
-  try {
-    const response = await axios.get<FetchNotesResponse>(
-      `/notes`,
-      {
-        params: {
-          search,
-          page,
-          perPage: 10,
-        },
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
-        },
-      },
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return {
-      notes: [],
-      totalPages: 0,
-    };
+  const params: Record<string, string | number> = {
+    page,
+    perPage: 10,
+  };
+
+  if (search.trim()) {
+    params.search = search;
   }
+
+  if (tag) {
+    params.tag = tag;
+  }
+
+  const response = await axios.get<FetchNotesResponse>("/notes", {
+    params,
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+    },
+  });
+
+  return response.data;
 };
+
 
 export interface CreateNoteData {
   title: string;
