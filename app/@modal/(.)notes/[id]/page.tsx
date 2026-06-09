@@ -1,6 +1,11 @@
-import css from "./NotePreview.module.css";
+import {
+  QueryClient,
+  HydrationBoundary,
+  dehydrate,
+} from "@tanstack/react-query";
 import { fetchNoteById } from "../../../../lib/api";
 import RoutedModal from "./RoutedModal";
+import NotePreviewClient from "./NotePreview.client";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -8,17 +13,18 @@ type Props = {
 
 const NotePreview = async ({ params }: Props) => {
   const { id } = await params;
-  const note = await fetchNoteById(id); 
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(id),
+  });
 
   return (
     <RoutedModal>
-      <div className={css.backdrop}>
-        <div className={css.modal}>
-          <h2>{note.title}</h2>
-          <p>{note.content}</p>
-          <p>{note.tag}</p>
-        </div>
-      </div>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <NotePreviewClient />
+      </HydrationBoundary>
     </RoutedModal>
   );
 };
