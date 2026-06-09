@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 import { fetchNotes } from "../../../../lib/api";
 import Modal from "../../../../components/Modal/Modal";
 import NoteList from "../../../../components/NoteList/NoteList";
@@ -13,14 +12,15 @@ import SearchBox from "../../../../components/SearchBox/SearchBox";
 import Pagination from "../../../../components/Pagination/Pagination";
 import NoteForm from "../../../../components/NoteForm/NoteForm";
 
-const NotesClient = () => {
+interface NotesClientProps {
+  tag: string;
+}
+
+const NotesClient = ({ tag }: NotesClientProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("searchQuery") ?? "";
   const currentPage = Number(searchParams.get("page") ?? "1");
-  const params = useParams();
-  const slug = params.slug as string[];
-  const tag = slug?.[0] === "all" ? "" : (slug?.[0] ?? "");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const debouncedHandleSearch = useDebouncedCallback((value: string) => {

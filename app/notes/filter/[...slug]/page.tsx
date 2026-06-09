@@ -32,7 +32,7 @@ const Notes = async ({ params, searchParams }: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient />
+      <NotesClient tag={tag} />
     </HydrationBoundary>
   );
 };
