@@ -4,8 +4,8 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { fetchNoteById } from "../../../../lib/api";
-import RoutedModal from "./RoutedModal";
 import NotePreviewClient from "./NotePreview.client";
+import ModalWrapper from "./ModalWrapper";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -21,11 +21,11 @@ const NotePreview = async ({ params }: Props) => {
   });
 
   return (
-    <RoutedModal>
+    <ModalWrapper>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <NotePreviewClient />
       </HydrationBoundary>
-    </RoutedModal>
+    </ModalWrapper>
   );
 };
 

@@ -7,14 +7,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-const RoutedModal = ({ children }: Props) => {
+const ModalWrapper = ({ children }: Props) => {
   const router = useRouter();
 
-  return (
-    <Modal onClose={() => router.back()}>
-      {children}
-    </Modal>
-  );
-}
+  return <Modal onClose={() => router.back()}>{children}</Modal>;
+};
 
-export default RoutedModal;
+export default ModalWrapper;
