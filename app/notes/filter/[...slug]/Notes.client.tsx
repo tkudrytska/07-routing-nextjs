@@ -19,12 +19,11 @@ const NotesClient = () => {
   const searchQuery = searchParams.get("searchQuery") ?? "";
   const currentPage = Number(searchParams.get("page") ?? "1");
   const params = useParams();
-const slug = params.slug as string[];
-const tag = slug?.[0] === "all" ? "" : slug?.[0] ?? "";
+  const slug = params.slug as string[];
+  const tag = slug?.[0] === "all" ? "" : (slug?.[0] ?? "");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const debouncedHandleSearch = useDebouncedCallback(
-  (value: string) => {
+  const debouncedHandleSearch = useDebouncedCallback((value: string) => {
     const params = new URLSearchParams(searchParams);
     if (value.trim()) {
       params.set("searchQuery", value);
@@ -33,9 +32,7 @@ const tag = slug?.[0] === "all" ? "" : slug?.[0] ?? "";
     }
     params.set("page", "1");
     router.push(`/notes/${tag || "all"}?${params.toString()}`);
-  },
-  300
-);
+  }, 300);
 
   const { data } = useQuery({
     queryKey: ["note", searchQuery, currentPage, tag],

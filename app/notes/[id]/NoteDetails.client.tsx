@@ -22,10 +22,7 @@ const NoteDetailsClient = () => {
   });
 
   const handleGoBack = () => {
-    const isSure = confirm('Are you sure?');
-    if (isSure) {
       router.back();
-    }
   };
 
   if (isLoading) return <p>Loading...</p>;
