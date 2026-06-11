@@ -31,7 +31,7 @@ const NotesClient = ({ tag }: NotesClientProps) => {
       params.delete("searchQuery");
     }
     params.set("page", "1");
-    router.push(`/notes/${tag || "all"}?${params.toString()}`);
+    router.push(`/notes/filter/${tag || "all"}?${params.toString()}`);
   }, 300);
 
   const { data } = useQuery({
@@ -43,7 +43,7 @@ const NotesClient = ({ tag }: NotesClientProps) => {
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", page.toString());
-    router.push(`/notes/${tag || "all"}?${params.toString()}`);
+    router.push(`/notes/filter/${tag || "all"}?${params.toString()}`);
   };
 
   const notes = data?.notes ?? [];
